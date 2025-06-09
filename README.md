@@ -150,3 +150,9 @@ Here the list is created recursively, and we're multiplying the head value of th
 
 <img src="imgs/reduce_img_2.png" width="450" />
 
+### Time and Space Complexity
+
+The time complexity of calling the R reduce function is O(n), n being the length of the list passed to it, since it calls itself for each element in the list in order to return the reduced integer.
+
+The space complexity of this program is also O(1), since it only produces a single integer at a time, which is ultimately what's returned.
+
