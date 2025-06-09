@@ -92,7 +92,7 @@ if __name__ == "__main__":
         sys.exit(1)
     
     ast_json = json_result["data"]
-    print(ast_json)
+    # print(ast_json)
     print("✓ AST to JSON Conversion completed successfully.")
 
     # Stage 4: Interpretation/Execution
