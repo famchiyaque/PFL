@@ -203,15 +203,15 @@ Where the 4 stages each do a part of the processing:
 
 2. The parser calls a prolog file with a CFG that returns a basic AST if parsed correctly.
 
-<img src="imgs/ex_prolog_ast.png.png" width="500" />
+<img src="imgs/ex_prolog_ast.png" width="500" />
 
 3. The converter converts this basic ast format into python friendly JSON format.
 
-<img src="imgs/ex_json_ast.png.png" width="500" />
+<img src="imgs/ex_json_ast.png" width="500" />
 
 4. The interpreter evaluates each node of the ast, keeping a dictionary during the entire interpretation stage that holds the values of declared variables and functions, mimicing a real runtime environment.
 
-<img src="imgs/ex_output.png.png" width="500" />
+<img src="imgs/ex_output.png" width="500" />
 
 ### Technical Analysis of the Pipeline
 
