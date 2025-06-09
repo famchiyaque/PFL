@@ -1,0 +1,16 @@
+int m = 5;
+
+list l = [1, 2, 3, 4, 5];
+
+list k = [];
+
+fun M(int x, list y, list r) {
+    int t = (x * y.head);
+    ? (y.length <= 1) return r;
+    : return M(x, y.popHead, r.pushTail(t));
+};
+
+list p = M(m, l, k);
+
+write(p);
+

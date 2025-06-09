@@ -1,0 +1,19 @@
+int g = 15;
+list h = [];
+
+fun B(int u, list v) {
+    ? (u < v.length) return v;
+    : return B(u, v.pushHead(u));
+};
+
+list l = B(g, h);
+write(l);
+
+fun R(list x, int r) {
+    int t = (x.head * r);
+    ? (x.length <= 1) return r;
+    : return R(x.popHead, t);
+};
+
+int f = R(l, 1);
+write(f);

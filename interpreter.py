@@ -1,4 +1,9 @@
-env = {} 
+env = {}
+
+def define_var(name, value):
+    # if name in env:
+    #     raise RuntimeError(f"Variable '{name}' already defined.")
+    env[name] = value
 
 def eval_program(ast):
     result = None
@@ -12,7 +17,8 @@ def eval_statement(stmt):
     if stmt["type"] == "int_decl":
         name = stmt["id"]
         value = eval_expr(stmt["value"])
-        env[name] = value
+        define_var(name, value)
+        # env[name] = value
         return None
 
     elif stmt["type"] == "return":
@@ -21,7 +27,8 @@ def eval_statement(stmt):
     elif stmt["type"] == "list_decl":
         name = stmt["id"]
         value = eval_expr(stmt["value"])
-        env[name] = value
+        define_var(name, value)
+        # env[name] = value
         return None
     
     elif stmt["type"] == "fun_def":
@@ -81,6 +88,8 @@ def eval_expr(expr):
             # Boolean check for empty list
             return len(base) == 0
         elif attr == "head":
+            # print("entered the head attr return")
+            # print("current 'base' or y: ", base)
             # Return first element of list
             return base[0] if base else None
         elif attr == "tail":

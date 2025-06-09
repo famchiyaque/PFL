@@ -61,6 +61,7 @@ if __name__ == "__main__":
         sys.exit(1)
     
     tokens = tokens_result["data"]
+    # print(tokens)
     print("✓ Tokenizing/Lexing completed successfully.")
 
     # Stage 2: Parsing/AST Generation
@@ -91,6 +92,7 @@ if __name__ == "__main__":
         sys.exit(1)
     
     ast_json = json_result["data"]
+    print(ast_json)
     print("✓ AST to JSON Conversion completed successfully.")
 
     # Stage 4: Interpretation/Execution
