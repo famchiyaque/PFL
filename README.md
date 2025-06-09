@@ -176,7 +176,7 @@ All of the following commands will run pre-defined .pfl scripts:
     python master.py ./code_examples/new.pfl
     '''
 
-Where func_param.pfl demonstrates how a function call can be passed as a parameter to another function call, reverse.pfl is a basic algorithm to reverse a list, ex.pfl uses creatively the available attributes of lists, and map.pfl is an example of a customizable map function. Feel free to edit these.
+Where reverse.pfl is a basic algorithm to reverse a list, ex.pfl uses creatively the available attributes of lists, and map.pfl is an example of a customizable map function. Feel free to edit these.
 
 ### Try it Yourself
 
