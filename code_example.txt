@@ -1,0 +1,12 @@
+int a = 16;
+list b = [2, 1, 5, 5];
+
+fun D(int x, list y, list r) {
+	int temp = (x * y.head);
+	? (y.empty) return r;
+	: return D(x, y.popHead, r);
+};
+
+list n = D(a, b, r);
+
+write(n);
