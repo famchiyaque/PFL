@@ -180,7 +180,7 @@ Where reverse.pfl is a basic algorithm to reverse a list, ex.pfl uses creatively
 
 ### Try it Yourself
 
-A custom program is easy to test, just create a file with literally any name and the suffic '.pfl',
+A custom program is easy to test, just create a file with literally any name and the suffix '.pfl',
 and execute it with the command that calls the master.py file as seen above to run it.
 
 For any doubts on how to write in this custom syntax, the User Guide can be found in the imgs directory.
@@ -189,21 +189,29 @@ For any doubts on how to write in this custom syntax, the User Guide can be foun
 
 The pipeline is entirely built on top of python and mimics real world interpreters, which are programs that evaluate source line by line instead of compiling the entire file into an executable.
 
-But keyword mimics, because this programming language is more of a wrapper than anything else, and it terribly unoptimized, unecessary, and should never be used in practical situations.
+But keyword mimics, because this programming language is more of a wrapper than anything else, and it's terribly unoptimized, unecessary, and should never be used in practical situations.
 
 The pipeline looks like this:
 
-<img src="imgs/Source Code.png" width="600" />
+<img src="imgs/Source Code.png" width="800" />
 
 Where the 4 stages each do a part of the processing:
 
 1. The lexer uses python's regex library to separate the code into tokens and then evaluate that they are part of the lexicon of the language.
 
+<img src="imgs/ex_tokens.png" width="500" />
+
 2. The parser calls a prolog file with a CFG that returns a basic AST if parsed correctly.
+
+<img src="imgs/ex_prolog_ast.png.png" width="500" />
 
 3. The converter converts this basic ast format into python friendly JSON format.
 
+<img src="imgs/ex_json_ast.png.png" width="500" />
+
 4. The interpreter evaluates each node of the ast, keeping a dictionary during the entire interpretation stage that holds the values of declared variables and functions, mimicing a real runtime environment.
+
+<img src="imgs/ex_output.png.png" width="500" />
 
 ### Technical Analysis of the Pipeline
 
