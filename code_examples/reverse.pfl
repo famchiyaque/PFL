@@ -1,0 +1,12 @@
+list a = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+list b = [];
+
+fun R(list x, list y) {
+    int n = x.head;
+    ? (x.length <= 1) return y;
+    : return R(x.popHead, y.pushHead(n));
+};
+
+list z = R(a, b);
+
+write(z);

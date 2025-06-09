@@ -152,7 +152,33 @@ Here the list is created recursively, and we're multiplying the head value of th
 
 ### Time and Space Complexity
 
-The time complexity of calling the R reduce function is O(n), n being the length of the list passed to it, since it calls itself for each element in the list in order to return the reduced integer.
+The time complexity of calling the R reduce function is O(n), n being the length of the list passed to 
+it, since it calls itself for each element in the list in order to return the reduced integer.
 
-The space complexity of this program is also O(1), since it only produces a single integer at a time, which is ultimately what's returned.
+The space complexity of this program is also O(1), since it only produces a single integer at a time, 
+which is ultimately what's returned.
 
+### Tests to Run
+
+There are plenty of example code files in the 'code_examples' directory to run and test. For example, 
+the 'func_param.pfl' file, which displays a use of a function call being passed as a parameter inside of 
+another function call, as functions should be able to do in functional programming languages, since 
+they're treated as variables themselves.
+
+All of the following commands will run pre-defined .pfl scripts:
+
+    '''bash
+    python master.py ./code_examples/func_param.pfl
+    python master.py ./code_examples/another.pfl
+    python master.py ./code_examples/ex.pfl
+    python master.py ./code_examples/map.pfl
+    python master.py ./code_examples/reverse.pfl
+    python master.py ./code_examples/new.pfl
+    '''
+
+### Try it Yourself
+
+A custom program is easy to test, just create a file with literally any name and the suffic '.pfl',
+and execute it with the command that calls the master.py file as seen above to run it.
+
+For any doubts on how to write in this custom syntax, the User Guide can be found in the imgs directory.

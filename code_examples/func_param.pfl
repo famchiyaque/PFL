@@ -1,0 +1,17 @@
+int a = 10;
+int b = 12;
+
+fun M(int x, int y) {
+    return (y + x);
+};
+
+list l = [0, 5, 10, 15, 20, 25];
+
+fun L(int u, list v) {
+    ? (u < v.head) return v.head;
+    : return L(u, v.popHead);
+};
+
+int r = L(M(a, b), l);
+
+write(r);

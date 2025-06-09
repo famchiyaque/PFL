@@ -7,7 +7,7 @@ list j = [];
 fun F(list x, list y, list z) {
     int n = (x.head + y.tail);
     int m = (n * 2);
-    ? (x.length <= 2) return z;
+    ? (x.length <= 1) return z;
     : return F(x.popHead, y.popTail, z.pushHead(m));
 };
 
