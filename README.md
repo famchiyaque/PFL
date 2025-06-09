@@ -176,9 +176,43 @@ All of the following commands will run pre-defined .pfl scripts:
     python master.py ./code_examples/new.pfl
     '''
 
+Where func_param.pfl demonstrates how a function call can be passed as a parameter to another function call, reverse.pfl is a basic algorithm to reverse a list, ex.pfl uses creatively the available attributes of lists, and map.pfl is an example of a customizable map function. Feel free to edit these.
+
 ### Try it Yourself
 
 A custom program is easy to test, just create a file with literally any name and the suffic '.pfl',
 and execute it with the command that calls the master.py file as seen above to run it.
 
 For any doubts on how to write in this custom syntax, the User Guide can be found in the imgs directory.
+
+## Analysis of Decisions Made
+
+The pipeline is entirely built on top of python and mimics real world interpreters, which are programs that evaluate source line by line instead of compiling the entire file into an executable.
+
+But keyword mimics, because this programming language is more of a wrapper than anything else, and it terribly unoptimized, unecessary, and should never be used in practical situations.
+
+The pipeline looks like this:
+
+<img src="imgs/Source Code.png" width="600" />
+
+Where the 4 stages each do a part of the processing:
+
+1. The lexer uses python's regex library to separate the code into tokens and then evaluate that they are part of the lexicon of the language.
+
+2. The parser calls a prolog file with a CFG that returns a basic AST if parsed correctly.
+
+3. The converter converts this basic ast format into python friendly JSON format.
+
+4. The interpreter evaluates each node of the ast, keeping a dictionary during the entire interpretation stage that holds the values of declared variables and functions, mimicing a real runtime environment.
+
+### Technical Analysis of the Pipeline
+
+The lexer uses regex and the language allows for numbers of various digits, meaning technically there is the potential for a time complexity of O(2^n), but there's also a check that makes sure that numbers don't exceed the bounds of integers in python, which prevents that. Integer and list names were specifically limited to single lower or upper characters for that reason.
+
+The parser contains a context free grammar and parses it in a recursive descent with backtracking. This means that the quality of how the grammar is written plays a big role. I designed the grammar to never allow any infinite pattern, so it should run on a time complexity of O(n^3).
+
+If the source code makes it past the parser, it means the syntax was good and all the rules were followed.
+
+The converter takes that abstract syntax tree, returned as a list of declarations or nodes, and converts it into JSON format. This takes O(n) time complexity, there is no recursion or advanced algorithm.
+
+The interpreter then evaluates each node of the JSON abstract syntax tree one by one, meaning it has the same time complexity than the code itself.
