@@ -73,7 +73,7 @@ can only be an integer declaration or list declaration:
     ld --> [list], ll, ['='], ['['], lc, [']'].
     '''
 
-which require a data structure identifier 'int' or 'list' to precede a declaration expression, and therefore doesn't allow any statements like the following:
+which require a data structure identifier 'int' or 'list' to precede a declaration expression, the grammar therefore doesn't allow any statements like the following:
 
     '''pfl
     int a = 10;
