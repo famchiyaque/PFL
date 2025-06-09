@@ -1,32 +1,38 @@
 import re
 import sys
 
-# valid_pattern = re.compile(
-#     r"(int|list|fun|return|write|[a-z]|[A-Z]|[0-9]+|"
-#     r"\+|\-|\*|\/|<=|>=|<|>|=|;|\(|\)|\{|\}|\[|\]|,|\.head|\.tail|"
-#     r"\.pushHead|\.popHead|\.pushTail|\.popTail|\.empty|\?|:)"
-# )
-
-valid_pattern = re.compile(
-    r"(int|list|fun|return|write|[a-z][a-zA-Z0-9_]*|[A-Z][a-zA-Z0-9_]*|"
-    r"\-?[0-9]+|"
-    r"\+|\-|\*|\/|<=|>=|<|>|=|;|\(|\)|\{|\}|\[|\]|,|\.head|\.tail|"
-    r"\.pushHead|\.popHead|\.pushTail|\.popTail|\.empty|\?|:)"
+# Token regex with named groups for clarity
+token_pattern = re.compile(
+    r"\b(?:int|list|fun|return|write)\b|"                  # keywords
+    r"\-?[0-9]+|"                                          # numbers (including negative)
+    r"\.head|\.tail|\.empty|\.length|\.popHead|\.pushHead|\.pushTail|\.popTail|"  # dot access
+    r"==|<=|>=|!=|=|<|>|\+|\-|\*|\/|"                      # operators
+    r"[A-Za-z_][A-Za-z0-9_]*|"                             # identifiers
+    r"[{}\[\]();,:?]"                                      # punctuation
 )
 
-def validate_word(word):
-    # print("current 'word': ", word)
-    # Check if it's a number (positive or negative)
-    # if re.fullmatch(r"\-?[0-9]+", word):
-    #     try:
-    #         num = int(word)
-    #         return -sys.maxsize - 1 <= num <= sys.maxsize
-    #     except (ValueError, OverflowError):
-    #         return False
-    return bool(valid_pattern.fullmatch(word))
+# Pattern for validating individual tokens
+valid_pattern = re.compile(
+    r"^(int|list|fun|return|write|[a-zA-Z_][a-zA-Z0-9_]*|"
+    r"\-?[0-9]+|"
+    r"\+|\-|\*|\/|<=|>=|<|>|=|==|!=|;|\(|\)|\{|\}|\[|\]|,|\.head|\.tail|"
+    r"\.pushHead|\.popHead|\.pushTail|\.popTail|\.empty|\.length|\?|:)$"
+)
 
-def validate_code(words):
-    for word in words:
-        if not validate_word(word):
-            return False
-    return True
+def tokenize_and_validate(file_name):
+    with open(file_name, 'r') as file:
+        code = file.read()
+
+    tokens = []
+    for match in token_pattern.finditer(code):
+        token = match.group()
+
+        if not valid_pattern.fullmatch(token):
+            raise SyntaxError(f"Invalid token: {token}")
+
+        if re.fullmatch(r"\-?[0-9]+", token):  # if token is an integer literal
+            tokens.append(int(token))
+        else:
+            tokens.append(token)
+
+    return tokens

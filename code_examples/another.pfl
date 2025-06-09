@@ -1,0 +1,13 @@
+int a = 20;
+
+list g = [2, 4, 6, 8];
+
+fun F(int x, list y) {
+    int z = (x * y.head);
+    ? (z > 10) return z;
+    : return x;
+};
+
+int b = F(a, g);
+
+write(b);

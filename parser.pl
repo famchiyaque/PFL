@@ -22,6 +22,7 @@ wc --> [write], ['('], dsr, [')'].
 
 % Integer/List Declarations
 id --> [int], ll, ['='], ie. 
+ld --> [list], ll, ['='], fcl.
 ld --> [list], ll, ['='], ['['], lc, [']'].
 
 % Allowed data structure/function names
@@ -36,18 +37,13 @@ fps_tail --> [',' ], fp, fps_tail.
 fps_tail --> [].
 
 % Function Contents
-fc --> lwr.
-# fc --> fl, rs. % (must have return statement)
-fc --> ifelse.
+fc --> fls, fr.
 
-% Lines With RS % (may be various normal lines, may be nothing)
-lwr --> l_list, rs.
+fls --> l, sc, fls.
+fls --> [].
 
-l_list --> [].
-l_list --> l, l_list.
-
-# fl --> l, fl.
-# fl --> [].
+fr --> rs.
+fr --> ifelse.
 
 % Data Structure Types/References with optional tail
 dst --> [int].
@@ -76,6 +72,7 @@ e --> be.
 
 ie --> num.
 ie --> ['('], ie, nop, ie, [')'].
+ie --> ll.
 ie --> ll, dsr_attr_n.
 ie --> fcl.
 

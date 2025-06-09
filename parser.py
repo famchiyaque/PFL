@@ -29,12 +29,6 @@ def format_token(token):
         return str(token)
     
 def parse_code(cleanTokens):
-    # cleaned_tokens = clean_tokens(cleanTokens)
-
-    # prolog_list = "[" + ", ".join(format_token(token) for token in cleaned_tokens) + "]"
-
-    # print("prepped tokens for prolog: ")
-    # print(prolog_list)
     
     prolog_command = f"consult('parser.pl'), parse_code({cleanTokens}), halt."
 
@@ -54,12 +48,9 @@ def parse_code(cleanTokens):
         return { "error": True, "message": str(e) }
     
 def get_ast(cleanTokens):
-    cleaned_tokens = clean_tokens(cleanTokens)
-
-    prolog_list = "[" + ", ".join(format_token(token) for token in cleaned_tokens) + "]"
 
     prolog_command = (
-        f"consult('ast.pl'), parse_code({prolog_list}, AST), write(AST), nl, halt."
+        f"consult('ast.pl'), parse_code({cleanTokens}, AST), write(AST), nl, halt."
     )
 
     try:
@@ -70,11 +61,11 @@ def get_ast(cleanTokens):
         )
 
         if result.returncode == 0:
-            print("was 0")
+            # print("was 0 in ast func")
             output = result.stdout.decode().strip()
             return { "error": False, "ast": output }
         else:
-            print("was not 0")
+            # print("was not 0 in ast func")
             return { "error": True, "message": result.stderr.decode() }
 
     except Exception as e:

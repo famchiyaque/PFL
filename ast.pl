@@ -11,9 +11,9 @@ l(Ast) --> fd(Ast).
 l(Ast) --> wc(Ast).
 l(skip) --> [].
 
-% Declarations
-dsd(int_decl(Id, Expr)) --> [int], ll(Id), ['='], e(Expr).
-# dsd(list_decl(Id, FuncCall)) --> [list], ll(Id), ['='], fcl(FuncCall).
+% Data Structure Declarations
+dsd(int_decl(Id, Expr)) --> [int], ll(Id), ['='], ie(Expr).
+dsd(list_decl(Id, FuncCall)) --> [list], ll(Id), ['='], fcl(FuncCall).
 dsd(list_decl(Id, list(Elements))) --> [list], ll(Id), ['='], ['['], lc(Elements), [']'].
 
 % Function definition
@@ -28,12 +28,17 @@ fp(param(Type, Name)) --> dst(Type), ll(Name).
 fps_tail([P | Ps]) --> [',' ], fp(P), fps_tail(Ps).
 fps_tail([]) --> [].
 
-% Function body (could be a block, conditional, or return)
-fc(Block) --> l(Block).
-fc(Cond) --> ifelse(Cond).
-fc(Return) --> rs(Return).
+% Function body - Updated to match new grammar
+% fc(block_with_return(Line, Return)) --> l(Line), rs(Return).
+% fc(Cond) --> ifelse(Cond).
+fc(block_with_return(Lines, Return)) --> fls(Lines), rs(Return).
+fc(block_with_conditional(Lines, Cond)) --> fls(Lines), ifelse(Cond).
 
-% Function call (list version)
+% Function lines - 0 or more lines with semicolons
+fls([Line|Rest]) --> l(Line), sc, fls(Rest).
+fls([]) --> [].
+
+% Function call
 fcl(func_call(Name, Args)) --> ul(Name), ['('], fclps(Args), [')'].
 
 fclps([Arg | Rest]) --> fclp(Arg), fclp_tail(Rest).
@@ -50,55 +55,62 @@ wc(write(Expr)) --> [write], ['('], dsr(Expr), [')'].
 % Return statement
 rs(return(Val)) --> [return], re(Val), sc.
 
-re(Var) --> ll(Var).
-re(FuncCall) --> fcl(FuncCall).
-re(Expr) --> ien(Expr).
+re(var(Var)) --> ll(Var).
+re(list_op(Var, Op)) --> ll(Var), dsr_attr_l(Op).
+re(Expr) --> ie(Expr).
 
-% If/Else
+% If/Else - Fixed to match grammar structure
 ifelse(if_else(Cond, Then, Else)) -->
-    ['?'], be(Cond), rs(Then), [':'], rs(Else).
+    if(Cond, Then), else(Else).
+
+if(Cond, Then) --> ['?'], be(Cond), rs(Then).
+else(Else) --> [':'], rs(Else).
 
 % Expressions
 e(Expr) --> ie(Expr).
 e(Expr) --> be(Expr).
-e(num(N)) --> num(N).
-e(FuncCall) --> fcl(FuncCall).
 
 % Integer expression
-ie(binop(Op, L, R)) --> ['('], ien(L), nop(Op), ien(R), [')'].
+ie(num(N)) --> num(N).
+ie(Var) --> ll(Var).
+ie(binop(Op, L, R)) --> ['('], ie(L), nop(Op), ie(R), [')'].
+ie(var_access(Id, Attr)) --> ll(Id), dsr_attr_n(Attr).
+ie(FuncCall) --> fcl(FuncCall).
 
-ien(num(N)) --> num(N).
-ien(var_access(Id, Attr)) --> ll(Id), dsr_attr(Attr).
-
-% Boolean expression
+% Boolean expressions
 be(Expr) --> ['('], jb(Expr), [')'].
 be(Expr) --> ['('], cb(Expr), [')'].
 
 jb(bool_call(Id, Attr)) --> ll(Id), dsr_attr_b(Attr).
 
-cb(compare(Op, L, R)) --> ien(L), cop(Op), ien(R).
+cb(compare(Op, L, R)) --> ie(L), cop(Op), ie(R).
 
 % Data structure reference
 dsr(dsr(Base, Attr)) --> ll(Base), dsr_tail(Attr).
 dsr_tail(Attr) --> dsr_attr(Attr).
 dsr_tail(none) --> [].
 
-dsr_attr(head) --> ['.head'].
-dsr_attr(tail) --> ['.tail'].
-dsr_attr(length) --> ['.length'].
-dsr_attr(pop_head) --> ['.popHead'].
-dsr_attr(pop_tail) --> ['.popTail'].
-dsr_attr(push_head(E)) --> ['.pushHead'], ['('], e(E), [')'].
-dsr_attr(push_tail(E)) --> ['.pushTail'], ['('], e(E), [')'].
-dsr_attr(empty) --> ['.empty'].
+% Data structure attributes (split by return type)
+dsr_attr(Attr) --> dsr_attr_n(Attr).
+dsr_attr(Attr) --> dsr_attr_b(Attr).
+dsr_attr(Attr) --> dsr_attr_l(Attr).
+
+dsr_attr_n(head) --> ['.head'].
+dsr_attr_n(tail) --> ['.tail'].
+dsr_attr_n(length) --> ['.length'].
+
+dsr_attr_l(pop_head) --> ['.popHead'].
+dsr_attr_l(pop_tail) --> ['.popTail'].
+dsr_attr_l(push_head(E)) --> ['.pushHead'], ['('], e(E), [')'].
+dsr_attr_l(push_tail(E)) --> ['.pushTail'], ['('], e(E), [')'].
 
 dsr_attr_b(empty) --> ['.empty'].
 
-% List of constants
-lc([N | Rest]) --> num(N), lct(Rest).
+% List contents
+lc([Elem | Rest]) --> ie(Elem), lct(Rest).
 lc([]) --> [].
 
-lct([N | Rest]) --> [','], lc([N | Rest]).
+lct(Rest) --> [','], lc(Rest).
 lct([]) --> [].
 
 % Function/variable names
